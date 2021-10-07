@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #if defined(__PPC64__) || defined(__PPC__)
-# define __break ({ __asm__ ("tw 31,r0,r0"); })
+# define __break ({ __asm__ ("trap"); })
 #endif
 
 #ifdef __MICROBLAZE__
