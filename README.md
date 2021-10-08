@@ -35,7 +35,7 @@ bool e_assert(bool predicate);
 This is your main option when it comes to asserts & a powerful one, indeed.
 
 In debug mode, when using a debugger or a probe, this function sets a breakpoint at the current pc
-if the predicate is wrong. Then you can look at memory and/or stack before any crash happens (hopefully).
+if the predicate is false. Then you can look at memory and/or stack before any crash happens (hopefully).
 
 In release mode (-DNDEBUG), it just checks the predicate value, which allows you to return an error 
 or solve the abnormal condition if needed.
@@ -55,19 +55,30 @@ Use it in void returning functions, same as POSIX 'assert' function.
 ### Unit tests
 In u_test.h :
 ```
+INIT_U_TESTS : Declares the required global variables to run the tests properly
 U_TEST(func) : Declares a void (void) function as a unit test, mostly for cosmetic reasons
-UNIT_TESTS : Substitutes to main to run the unit tests declared by U_TEST.
+U_TESTS : Substitutes to main to run the unit tests declared by U_TEST
+RUN_U_TEST : Calls the current unit test function (with log)
+END_U_TESTS : Returns the status of the tests, mainly for automation purposes
 
 Example of structure :
 
-UNIT_TESTS {
-  U_TEST(test1);
-  U_TEST(test2);
-  ...
+INIT_U_TESTS;
+
+U_TEST(test1)
+{
+  /* ... */
+}
+
+U_TESTS {
+  RUN_U_TEST(test1);
+  RUN_U_TEST(test2);
+  /* ... */
+  END_U_TESTS;
 }
 ```
 
-In u_assert.h:
+#### Unit tests assertions
 ```
 void u_assert(bool predicate);
 void u_assert_var_equals(var a, var b);

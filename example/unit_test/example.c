@@ -1,15 +1,15 @@
 #include "u_test.h"
-#include "u_assert.h"
-
 #include "../example.c"
 
-static void test_example_0(void)
+INIT_U_TESTS(example.c);
+
+U_TEST(test_example_0)
 {
   ssize_t res = example(0);
   u_assert_var_equals(res, -EINVAL);
 }
 
-static void test_example_other(void)
+U_TEST(test_example_other)
 {
   ssize_t res;
 
@@ -20,14 +20,16 @@ static void test_example_other(void)
   u_assert_var_equals(res, 27);
 }
 
-static void test_example_fail(void)
+U_TEST(test_example_fail)
 {
   ssize_t res = example(1);
   u_assert_var_equals(res, 10);
 }
 
-UNIT_TESTS {
-  U_TEST(test_example_0);
-  U_TEST(test_example_other);
-  U_TEST(test_example_fail);
+U_TESTS {
+  RUN_U_TEST(test_example_0);
+  RUN_U_TEST(test_example_other);
+  RUN_U_TEST(test_example_fail);
+  END_U_TESTS;
 }
+

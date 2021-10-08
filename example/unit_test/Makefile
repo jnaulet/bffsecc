@@ -1,7 +1,7 @@
 SOURCE := $(wildcard *.c)
 UNIT := $(SOURCE:%.c=%.unit)
 
-CFLAGS := -I../../include
+CFLAGS := -I../../include -DUNIT_TESTS
 
 all: $(UNIT)
 
