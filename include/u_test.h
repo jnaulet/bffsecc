@@ -2,6 +2,7 @@
 #define U_TEST_H
 
 #include <stdio.h>
+#include <string.h>
 
 #define INIT_U_TESTS(name)                      \
   int __result__ = 0
@@ -11,7 +12,7 @@
 
 #define RUN_U_TEST(x)                           \
   do {                                          \
-    fprintf(stderr, "Running %s...\n", #x);     \
+    fprintf(stderr, "### Running %s...\n", #x);	\
     x();                                        \
   } while(0)
 
@@ -32,7 +33,7 @@
 /* asserts */
 
 #define __u_assert_output(x, status, ret)               \
-  ({ fprintf(stderr, "%s:%d assertion \'%s\' %s.\n",    \
+  ({ fprintf(stdout, "%s:%d assertion \'%s\' %s.\n",    \
              __FILE__, __LINE__, #x, #status);          \
     __result__ |= ret; })
 
@@ -43,35 +44,40 @@
 #define u_assert(x)                                     \
   ((x) ? __u_assert_passed(x) : __u_assert_failed(x))
 
-#define __u_assert_var_equals_output(a, b, status, ret)                 \
-  ({ fprintf(stderr, "%s:%d \'%s(%ld) == %s(%ld)\' %s.\n",              \
+#define __u_assert_eq_output(a, b, status, ret)				\
+  ({ fprintf(stdout, "%s:%d \'%s(%ld) == %s(%ld)\' %s.\n",              \
              __FILE__, __LINE__, #a, (long)a, #b, (long)b, #status);    \
     __result__ |= ret; })
 
-#define __u_assert_var_equals_passed(a, b)      \
-  __u_assert_var_equals_output(a, b, passed, 0)
-#define __u_assert_var_equals_failed(a, b)              \
-  __u_assert_var_equals_output(a, b, failed, -1)
+#define __u_assert_eq_passed(a, b)		\
+  __u_assert_eq_output(a, b, passed, 0)
+#define __u_assert_eq_failed(a, b)		\
+  __u_assert_eq_output(a, b, failed, -1)
 
-/* u_assert_var_equals */
-#define u_assert_var_equals(a, b)                       \
-  ((a) == (b) ? __u_assert_var_equals_passed(a, b)      \
-   : __u_assert_var_equals_failed(a, b))
+/* u_assert_eq */
+#define u_assert_eq(a, b)			\
+  ((a) == (b) ? __u_assert_eq_passed(a, b)	\
+   : __u_assert_eq_failed(a, b))
 
-#define __u_assert_str_equals_output(a, b, status, ret)         \
-  ({ fprintf(stderr, "%s:%d \'%s(%s) == %s(%s)\' %s.\n",        \
+#define __u_assert_str_eq_output(a, b, status, ret)		\
+  ({ fprintf(stdout, "%s:%d \'%s(%s) == %s(%s)\' %s.\n",        \
              __FILE__, __LINE__, #a, a, #b, b, #status);        \
     __result__ |= ret; })
 
-#define __u_assert_str_equals_passed(a, b)      \
-  __u_assert_str_equals_output(a, b, passed, 0)
-#define __u_assert_str_equals_failed(a, b)              \
-  __u_assert_str_equals_output(a, b, failed, -1)
+#define __u_assert_str_eq_passed(a, b)		\
+  __u_assert_str_eq_output(a, b, passed, 0)
+#define __u_assert_str_eq_failed(a, b)		\
+  __u_assert_str_eq_output(a, b, failed, -1)
 
-/* u_assert_str_equals */
-#define u_assert_str_equals(a, b)               \
-  (!strncmp((a), (b)) ?                         \
-   __u_assert_str_equals_passed(a, b) :         \
-   __u_assert_str_equals_failed(a, b))
+/* u_assert_str_eq */
+#define u_assert_str_eq(a, b)			\
+  (!strcmp((a), (b)) ?				\
+   __u_assert_str_eq_passed(a, b) :		\
+   __u_assert_str_eq_failed(a, b))
+
+/*
+ * some useful stuff
+ */
+#define NOT_NULL ((void*)1)
 
 #endif
