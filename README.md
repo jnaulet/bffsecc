@@ -81,8 +81,8 @@ U_TESTS {
 #### Unit tests assertions
 ```
 void u_assert(bool predicate);
-void u_assert_var_equals(var a, var b);
-void u_assert_str_equals(char *a, char *b);
+void u_assert_eq(var a, var b);
+void u_assert_str_eq(char *a, char *b);
 ```
 These functions are used inside unit tests to check values & show if a test
 succeeded or failed & why.

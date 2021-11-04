@@ -12,7 +12,7 @@ Rationale: This kind of construction almost garantees you won't be able
 to get a decent code coverage in your unit tests.
 
 As a general rule of thumb, a switch deserves its own function and two levels of
-nesting per function is the maximum.
+nesting per function (three, exceptionally) is the maximum.
 
 ## 3: Keyword & types redefinition
 Rationale: any competent developer must be able to understand your code just by looking
@@ -38,9 +38,8 @@ an indecent number of extern "C" wraps all over the headers. Awful.
 Rationale: This will make any refactoring of your code a pain. You will find out the hard
 way what file uses this variable you just moved around or removed.
 
-As a general rule of thumb, you are allowed one global object, usually a struct
-that contains the whole context of your software, and it should be static inside your main
-c file.
+All your globals should de static , including your main program context and you should
+only manipulate them with accessors (a.k.a object oriented programming).
 
 ## 6: Not checking parameters
 Rationale: Any function parameter must have boundaries & has to be checked
@@ -52,6 +51,9 @@ algorithm with no need for exceptions management.
 Your program must be like a conveyor belt in a biscuit factory. Any non-conform
 parameter must be kicked out, the program cannot stop or crash.
 
+Some of these checks could be perfomed by your static analyzer but beware, some
+don't !
+
 ## 7: Not being coherent
 Rationale: You must be able to spot any anomaly instantaneously.
 
@@ -62,4 +64,17 @@ Use an automatic indentation system so your code doesn't slowly drift to inconsi
 every time someone fixes or adds something. This is especially useful for bug tracking,
 you want your patches to be free of any kind of "noise".
 
-By making the exception the norm, you will make your life miserable, i garantee.
+By making the exception the norm, you will make your life miserable.
+
+### 8 (bonus): Trying to be smart
+Rationale: You might be tempted to use a hack to make quick work of what appears to be
+an otherwise long and fastidious job, but it's usually a mistake.
+
+I especially think about the temptation of generalisation, when you think you could
+replace a bunch of accessors with a table full of properties.
+
+The risk is you discover more and more properties along the way and you table grows
+and grows until it makes too many things for its own good.
+
+Be selfish and think about yourself in a few months, in which state do you want your
+code to be when it will come back to you with a bug hidden somewhere ?
