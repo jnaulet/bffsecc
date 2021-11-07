@@ -6,6 +6,7 @@ OBJ := $(SRC:%.c=%.o)
 
 INCLUDE := -Iinclude -I$(TOP)/include
 CFLAGS := -Wall -Wextra $(INCLUDE)
+SPLINTFLAGS := -checks -exportlocal
 
 all: $(LIB)
 
@@ -16,7 +17,7 @@ $(LIB): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 splint:
-	splint $(INCLUDE) $(SRC)
+	splint $(SPLINTFLAGS) $(INCLUDE) $(SRC)
 
 clean:
 	-rm -f $(OBJ) $(LIB)

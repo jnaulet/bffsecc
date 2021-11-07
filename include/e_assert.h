@@ -4,27 +4,27 @@
 #include <stdbool.h>
 
 #if defined(__PPC64__) || defined(__PPC__)
-# define __break ({ __asm__ ("trap"); })
+# define e_assert_break ({ __asm__ ("trap"); })
 #endif
 
 #ifdef __MICROBLAZE__
-# define __break ({ __asm__ ("brki r0,0x18"); })
+# define e_assert_break ({ __asm__ ("brki r0,0x18"); })
 #endif
 
 #ifdef __aarch64__
-# define __break ({ __asm__ ("brk 0"); })
+# define e_assert_break ({ __asm__ ("brk 0"); })
 #endif
 
-#ifndef __break /* default: x86 */
-# define __break ({ __asm__ ("int3"); })
+#ifndef e_assert_break /* default: x86 */
+# define e_assert_break ({ __asm__ ("int3"); })
 #endif
 
-#define __break_false ({ __break, false; })
+#define e_assert_break_false ({ e_assert_break, false; })
 
 /*
  * Traps are deactivated in release & unit_test builds
  */
-#if defined(NDEBUG) || defined(UNIT_TESTS)
+#if defined(NDEBUG) || defined(S_SPLINT_S)
 
 # define e_assert(x) (x)
 # define e_assert_void(x) /*@-noeffect@*/
@@ -32,9 +32,9 @@
 
 #else
 
-# define e_assert(x) ((x) ? true : __break_false)
-# define e_assert_void(x) /*@-noeffect@*/((x) ? (void)0 : __break)
-# define e_assert_fail() /*@-noeffect@*/__break
+# define e_assert(x) ((x) ? true : e_assert_break_false)
+# define e_assert_void(x) /*@-noeffect@*/((x) ? (void)0 : e_assert_break)
+# define e_assert_fail() /*@-noeffect@*/e_assert_break
 
 #endif
 

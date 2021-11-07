@@ -52,12 +52,11 @@ ret_t safe_memcpy(mem_t *dest, const mem_t *src, size_t n)
   if(!e_assert(no_overlap(dest, src, n) == 0)) return MEM_OVERLAP;
 
   /* dirty copy */
-  size_t i;
   char *pdest = (char*)dest->addr;
   const char *psrc = (const char*)src->addr;
 
-  for(i = 0; i < n; i++)
-    pdest[i] = psrc[i];
+  while(n-- != 0)
+    pdest[n] = psrc[n];
   
   return SUCCESS;
 }
@@ -72,12 +71,11 @@ ret_t safe_memset(mem_t *s, int c, size_t n)
   if(!e_assert(mem_valid(s, n) == 0)) return MEM_INVALID;
   
   /* dirty set */
-  size_t i;
   char *ps = (char*)s->addr;
 
-  for(i = 0; i < n; i++)
-    ps[i] = (char)0xff & c;
-
+  while(n-- != 0)
+    ps[n] = (char)0xff & c;
+  
   return SUCCESS;
 }
 

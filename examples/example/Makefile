@@ -7,7 +7,7 @@ OBJ := $(SOURCES:.c=.o)
 
 INCLUDE := -I$(TOP)/include
 CFLAGS := -Wall -Wextra -D__X86_64__ -g $(INCLUDE)
-SPLINTFLAGS := -badflag +posixlib
+SPLINTFLAGS := -checks +posixlib
 
 all: $(APP)
 
@@ -20,7 +20,7 @@ $(APP): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 splint:
-	splint $(SPLINTFLAGS) $(CFLAGS) $(SOURCES)
+	splint $(SPLINTFLAGS) $(INCLUDE) $(SOURCES)
 
 clean:
 	@rm -f $(APP) $(OBJ)

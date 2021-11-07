@@ -15,7 +15,7 @@ ret_t safe_memcmp(const mem_t *s1, const mem_t *s2, size_t n, int *ret);
 
 /* str ops */
 
-#define STR_MAX 256
+#define STR_MAX (size_t)256
 
 typedef struct {
   char c_str[STR_MAX];
