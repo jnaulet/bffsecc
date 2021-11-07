@@ -24,7 +24,7 @@ static void usage(char *argv0)
   (void)fprintf(stderr, "usage: %s number\n", argv0);
 }
 
-#ifndef UNIT_TESTS
+#ifndef NDEBUG
 
 /*
  * main

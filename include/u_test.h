@@ -32,6 +32,24 @@
 
 /* asserts */
 
+#define U_ASSERT(x)                                     \
+  ((x) ? __u_assert_passed(x) : __u_assert_failed(x))
+
+#define U_ASSERT_EQ(a, b)			\
+  ((a) == (b) ? __u_assert_eq_passed(a, b)	\
+   : __u_assert_eq_failed(a, b))
+
+#define U_ASSERT_STR_EQ(a, b)			\
+  (!strcmp((a), (b)) ?				\
+   __u_assert_str_eq_passed(a, b) :		\
+   __u_assert_str_eq_failed(a, b))
+
+/* useful stuff */
+
+#define NOT_NULL ((void*)1)
+  
+/* internals */
+
 #define __u_assert_output(x, status, ret)               \
   ({ fprintf(stdout, "%s:%d assertion \'%s\' %s.\n",    \
              __FILE__, __LINE__, #x, #status);          \
@@ -39,10 +57,6 @@
 
 #define __u_assert_passed(x) __u_assert_output(x, passed, 0)
 #define __u_assert_failed(x) __u_assert_output(x, failed, -1)
-
-/* u_assert */
-#define u_assert(x)                                     \
-  ((x) ? __u_assert_passed(x) : __u_assert_failed(x))
 
 #define __u_assert_eq_output(a, b, status, ret)				\
   ({ fprintf(stdout, "%s:%d \'%s(%ld) == %s(%ld)\' %s.\n",              \
@@ -54,11 +68,6 @@
 #define __u_assert_eq_failed(a, b)		\
   __u_assert_eq_output(a, b, failed, -1)
 
-/* u_assert_eq */
-#define u_assert_eq(a, b)			\
-  ((a) == (b) ? __u_assert_eq_passed(a, b)	\
-   : __u_assert_eq_failed(a, b))
-
 #define __u_assert_str_eq_output(a, b, status, ret)		\
   ({ fprintf(stdout, "%s:%d \'%s(%s) == %s(%s)\' %s.\n",        \
              __FILE__, __LINE__, #a, a, #b, b, #status);        \
@@ -68,16 +77,5 @@
   __u_assert_str_eq_output(a, b, passed, 0)
 #define __u_assert_str_eq_failed(a, b)		\
   __u_assert_str_eq_output(a, b, failed, -1)
-
-/* u_assert_str_eq */
-#define u_assert_str_eq(a, b)			\
-  (!strcmp((a), (b)) ?				\
-   __u_assert_str_eq_passed(a, b) :		\
-   __u_assert_str_eq_failed(a, b))
-
-/*
- * some useful stuff
- */
-#define NOT_NULL ((void*)1)
 
 #endif
