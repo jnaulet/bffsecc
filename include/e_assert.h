@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #if defined(__PPC64__) || defined(__PPC__)
-# define e_assert_break ({ __asm__ ("trap"); })
+# define e_assert_break ({ __asm__ ("se_illegal"); })
 #endif
 
 #ifdef __MICROBLAZE__
