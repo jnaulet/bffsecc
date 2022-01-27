@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #if defined(__PPC64__) || defined(__PPC__)
-# define e_assert_break ({ __asm__ ("se_illegal"); __asm__("nop"); })
+# define e_assert_break ({ __asm__ ("se_illegal \n\t se_nop "); })
 #endif
 
 #ifdef __MICROBLAZE__
@@ -26,15 +26,15 @@
  */
 #if defined(NDEBUG) || defined(S_SPLINT_S)
 
-# define e_assert(x) (x)
-# define e_assert_void(x) /*@-noeffect@*/
-# define e_assert_fail() /*@-noeffect@*/
+/*@maynotreturn@*/ bool e_assert( /*@sef@*/ bool pred);
+/*@maynotreturn@*/ void e_assert_void( /*@sef@*/ bool pred);
+/*@maynotreturn@*/ void e_assert_fail(void);
 
 #else
 
 # define e_assert(x) ((x) ? true : e_assert_break_false)
-# define e_assert_void(x) /*@-noeffect@*/((x) ? (void)0 : e_assert_break)
-# define e_assert_fail() /*@-noeffect@*/e_assert_break
+# define e_assert_void(x) ((x) ? (void)0 : e_assert_break)
+# define e_assert_fail() e_assert_break
 
 #endif
 
