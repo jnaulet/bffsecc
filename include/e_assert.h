@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#if defined(__PPC64__) || defined(__PPC__)
+#if defined(__PPC__) && defined (__VLE__)
 # define e_assert_break ({ __asm__ ("se_illegal \n\t se_nop "); })
 #endif
 
