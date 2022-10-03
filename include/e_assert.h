@@ -53,7 +53,7 @@
 
 # else
 
-#  define e_assert(x) ((x) ? true : e_assert_break, false)
+#  define e_assert(x) ((x) ? (true) : (e_assert_break, false))
 #  define e_assert_void(x) if(!(x)) e_assert_break
 #  define e_assert_fail() e_assert_break
 
